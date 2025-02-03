@@ -1,0 +1,7 @@
+build*
+*.o
+
+liblhpc-aff.a
+lhpc-aff-config
+lhpc-aff
+lhpc-aff.h
