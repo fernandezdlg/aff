@@ -51,7 +51,7 @@ paff_reader_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     const char *msg;
     
     if (self != NULL) {
-        if (!PyArg_ParseTupleAndKeywords(args, kwds, "S", kwlist,
+        if (!PyArg_ParseTupleAndKeywords(args, kwds, "U", kwlist,
                                          &self->name))
             goto error;
 
@@ -121,7 +121,7 @@ paff_reader_newdir(paff_Reader *r, PyObject *args)
         PyErr_SetString(paff_exception, "closed reader");
         return NULL;
     }
-    if (! PyArg_ParseTuple(args, "s", &path))
+    if (! PyArg_ParseTuple(args, "es", "utf-8", &path))
         return NULL;
 
     new_dir = aff_reader_chpath(r->reader, r->dir, path);
@@ -130,6 +130,7 @@ paff_reader_newdir(paff_Reader *r, PyObject *args)
         PyErr_SetString(paff_exception, aff_reader_errstr(r->reader));
         aff_reader_clearerr(r->reader);
     }
+    PyMem_Free(path);
     return new_dir;
 }
 
@@ -482,7 +483,7 @@ paff_writer_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
     const char *msg;
     
     if (self != NULL) {
-        if (!PyArg_ParseTupleAndKeywords(args, kwds, "S", kwlist,
+        if (!PyArg_ParseTupleAndKeywords(args, kwds, "U", kwlist,
                                          &self->name))
             goto error;
 
@@ -552,10 +553,10 @@ paff_writer_newdir(paff_Writer *w, PyObject *args, PyObject **extra)
         return NULL;
     }
     if (extra == NULL) {
-        if (!PyArg_ParseTuple(args, "s", &path))
+        if (!PyArg_ParseTuple(args, "es", "utf-8", &path))
             return NULL;
     } else {
-        if (!PyArg_ParseTuple(args, "sO", &path, extra))
+        if (!PyArg_ParseTuple(args, "esO", "utf-8", &path, extra))
             return NULL;
     }
     
@@ -564,6 +565,7 @@ paff_writer_newdir(paff_Writer *w, PyObject *args, PyObject **extra)
         PyErr_SetString(paff_exception, aff_writer_errstr(w->writer));
         aff_writer_clearerr(w->writer);
     }
+    PyMem_Free(path);
     return new_dir;
 }
 

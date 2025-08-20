@@ -1,0 +1,22 @@
+## Installation of `aff` as a python library
+
+To install the library, I suggest creating a new conda environment for it.
+
+```bash
+conda create -n affpy3 python=3.13
+```
+
+Activate the environment:
+
+```bash
+conda activate affpy3
+```
+
+Build and install the aff-python extension from this directory ("../aff/python"):
+
+```bash
+python setup.py build
+python setup.py install
+```
+
+Test the installation by running the `test.ipynb` notebook.
