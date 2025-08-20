@@ -4,21 +4,36 @@ preexisting configuration fits your machine, choose one that is close enough
 and tweak it. Please send us back a new configuration file once it is working
 and we will include it in the official distribution.
 
-The following is the acutual build procedure we use on the MIT Blue Gene.
+The following is the actual build procedure we use on the University of Bern ITP cluster.
 
-1. Unpack the distribution:
+1. Clone this repo:
 
-% bunzip2 < lhpc-afff-1.0.0.tar.bz | tar -xf -
+```bash
+git clone git@github.com:fernandezdlg/aff.git
+```
 
 2. Build the library.
-
-% make CONFIG=config.bgl
+```bash
+make CONFIG=linux
+```
 
 3. Install it
 
-% su
-# make CONFIG=config.bgl install prefix=/opt/SciDEC/fen64/lhpc-aff-1.0.0
-# exit
+```bash
+make CONFIG=linux install prefix=./install/
+```
+
+3.1. Check installation
+
+```bash
+./install/bin/lhpc-aff version
+```
+
+3.2. Add to your PATH
+
+```bash
+export PATH=$PATH:./install/bin
+```
 
 4. After building the library you may build and install an optional Python
 package. It requires python 2.5 or newer. Follow the steps below
