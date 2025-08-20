@@ -11,3 +11,5 @@ make CONFIG=linux
 # make CONFIG=linux install prefix="./build-${timestamp}"
 
 make CONFIG=linux install prefix="./build"
+
+export PATH="$PATH:./build/bin"

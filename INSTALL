@@ -20,19 +20,19 @@ make CONFIG=linux
 3. Install it
 
 ```bash
-make CONFIG=linux install prefix=./install/
+make CONFIG=linux install prefix=./build
 ```
 
 3.1. Check installation
 
 ```bash
-./install/bin/lhpc-aff version
+./build/bin/lhpc-aff version
 ```
 
 3.2. Add to your PATH
 
 ```bash
-export PATH=$PATH:./install/bin
+export PATH=$PATH:./build/bin
 ```
 
 4. After building the library you may build and install an optional Python

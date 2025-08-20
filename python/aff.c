@@ -31,16 +31,15 @@ static PyObject *
 paff_reader_str(paff_Reader *self)
 {
     if (self->name == NULL) {
-        return PyUnicode_FromFormat("<aff Reader without a name at %p>",
-									self);
+        return PyUnicode_FromFormat("<aff Reader without a name at %p>", self);
     } else if (self->reader == NULL) {
-        return PyUnicode_FromFormat("<closed aff Reader('%s') at %p>",
-									PyObject_REPR(self->name),
-									self);
+        const char *n = PyUnicode_AsUTF8(self->name);
+        if (!n) return NULL;
+        return PyUnicode_FromFormat("<closed aff Reader('%s') at %p>", n, self);
     } else {
-        return PyUnicode_FromFormat("<aff Reader('%s') at %p>",
-									PyObject_REPR(self->name),
-									self);
+        const char *n = PyUnicode_AsUTF8(self->name);
+        if (!n) return NULL;
+        return PyUnicode_FromFormat("<aff Reader('%s') at %p>", n, self);
     }
 }
 
@@ -57,7 +56,10 @@ paff_reader_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
             goto error;
 
         Py_INCREF(self->name);
-        self->reader = aff_reader(PyObject_REPR(self->name));
+        const char *fname = PyUnicode_AsUTF8(self->name);
+        if (!fname) goto error;
+
+        self->reader = aff_reader(fname);
         msg = aff_reader_errstr(self->reader);
         if (msg) {
             PyErr_SetString(paff_exception, msg);
@@ -395,9 +397,11 @@ paff_node_to_path(struct AffNode_s *dir)
         return NULL;
     for (; parent != dir; dir = parent, parent = aff_node_parent(parent)) {
         symbol = aff_node_name(parent);
+        const char *r = PyUnicode_AsUTF8(result);
+        if (!r) { Py_DECREF(result); return NULL; }
         PyObject *p = PyUnicode_FromFormat("%s/%s",
-										   aff_symbol_name(symbol),
-										   PyObject_REPR(result));
+                                           aff_symbol_name(symbol),
+                                           r);
         Py_DECREF(result);
         if (p == 0)
             return NULL;
@@ -458,16 +462,15 @@ static PyObject *
 paff_writer_str(paff_Writer *self)
 {
     if (self->name == NULL) {
-        return PyUnicode_FromFormat("<aff Writer without a name at %p>",
-									self);
+        return PyUnicode_FromFormat("<aff Writer without a name at %p>", self);
     } else if (self->writer == NULL) {
-        return PyUnicode_FromFormat("<closed aff Writer('%s') at %p>",
-									PyObject_REPR(self->name),
-									self);
+        const char *n = PyUnicode_AsUTF8(self->name);
+        if (!n) return NULL;
+        return PyUnicode_FromFormat("<closed aff Writer('%s') at %p>", n, self);
     } else {
-        return PyUnicode_FromFormat("<aff Writer('%s') at %p>",
-									PyObject_REPR(self->name),
-									self);
+        const char *n = PyUnicode_AsUTF8(self->name);
+        if (!n) return NULL;
+        return PyUnicode_FromFormat("<aff Writer('%s') at %p>", n, self);
     }
 }
 
@@ -484,7 +487,10 @@ paff_writer_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
             goto error;
 
         Py_INCREF(self->name);
-        self->writer = aff_writer(PyObject_REPR(self->name));
+        const char *fname = PyUnicode_AsUTF8(self->name);
+        if (!fname) goto error;
+
+        self->writer = aff_writer(fname);
         msg = aff_writer_errstr(self->writer);
         if (msg) {
             PyErr_SetString(paff_exception, msg);
@@ -620,7 +626,8 @@ static PyObject *
 paff_write_char(paff_Writer *w, struct AffNode_s *dir,
                 int size, PyObject *data)
 {
-    const char *str = PyObject_REPR(data);
+    const char *str = PyUnicode_AsUTF8(data);
+    if (!str) return NULL;
 
     if (aff_node_put_char(w->writer, dir, str, size)) {
         PyErr_SetString(paff_exception, aff_writer_errstr(w->writer));

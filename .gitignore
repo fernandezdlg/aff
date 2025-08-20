@@ -1,6 +1,7 @@
 install*
 build*
 *.o
+*.egg-info
 
 liblhpc-aff.a
 lhpc-aff-config
