@@ -6,10 +6,14 @@ To install the library, I suggest creating a new conda environment for it.
 conda create -n affpy3 python=3.13
 ```
 
-Activate the environment:
+Activate the environment and install setuptools:
 
 ```bash
 conda activate affpy3
+```
+
+```bash
+conda install setuptools
 ```
 
 Build and install the aff-python extension from this directory ("../aff/python"):

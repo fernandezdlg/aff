@@ -65,11 +65,16 @@ char *mk_tmp_filename( const char *mark, const char *fname )
         fprintf( stderr, "%s: not enough memory\n", __func__ );
         exit(1);
     }
-    size_t res_len;
-    strncpy( res, fname, fname_len + 1 ),           res_len = strlen( res );
-    strncpy( res + res_len, mark, mark_len + 1 ),   res_len = strlen( res );
-    strncpy( res + res_len, template, 
-            template_len + 1 ),                     res_len = strlen( res );
+    // size_t res_len;
+    // strncpy( res, fname, fname_len + 1 ),           res_len = strlen( res );
+    // strncpy( res + res_len, mark, mark_len + 1 ),   res_len = strlen( res );
+    // strncpy( res + res_len, template,
+    //         template_len + 1 ),                     res_len = strlen( res );
+    size_t res_len = 0;
+    memcpy(res + res_len, fname, fname_len);    res_len += fname_len;
+    memcpy(res + res_len, mark,  mark_len);     res_len += mark_len;
+    memcpy(res + res_len, template, template_len); res_len += template_len;
+    res[res_len] = '\0';
     int mkres = mkstemp( res );
     if( mkres < 0 )
     {

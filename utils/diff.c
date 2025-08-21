@@ -365,21 +365,21 @@ node_type_str(enum AffNodeType_e type) {
 }
 
 /* compare data in `nodeA' and `nodeB' */
-static int 
+static int
 diff_node_data(struct AffReader_s *rA, struct AffNode_s *nodeA, const char *fileA_name,
                struct AffReader_s *rB, struct AffNode_s *nodeB, const char *fileB_name)
 {
     // compare type and size
-    int is_diff = 0;
+    // int is_diff = 0; // TODO: rm, unused
     if (aff_node_type(nodeA) != aff_node_type(nodeB)) {
         if (!quiet_report) {
             print_path(aff_reader_root(rA), nodeA);
             printf("  <=>  ");
             print_path(aff_reader_root(rB), nodeB);
-            printf(": different data type: %s != %s\n", 
-                   node_type_str(aff_node_type(nodeA)), node_type_str(aff_node_type(nodeB)));
-            is_diff = 1;    
-        } else 
+            printf(": different data type: %s != %s\n",
+                    node_type_str(aff_node_type(nodeA)), node_type_str(aff_node_type(nodeB)));
+            // is_diff = 1; // TODO: rm, unused
+        } else
             return 1;
     }
     if (aff_node_size(nodeA) != aff_node_size(nodeB)) {
@@ -387,13 +387,13 @@ diff_node_data(struct AffReader_s *rA, struct AffNode_s *nodeA, const char *file
             print_path(aff_reader_root(rA), nodeA);
             printf("  <=>  ");
             print_path(aff_reader_root(rB), nodeB);
-            printf(": different data size: %ld != %ld\n", 
-                   (long int)aff_node_size(nodeA), (long int)aff_node_size(nodeB));
-            is_diff = 1;
-        } else 
+            printf(": different data size: %ld != %ld\n",
+                    (long int)aff_node_size(nodeA), (long int)aff_node_size(nodeB));
+            // is_diff = 1; // TODO: rm, unused
+        } else
             return 1;
     }
-        
+
     // compare data
     int diff_res = 0;
     char buf[10000];
@@ -418,7 +418,7 @@ diff_node_data(struct AffReader_s *rA, struct AffNode_s *nodeA, const char *file
     case affNodeVoid:
         break;
     }
-    if (diff_res < 0) 
+    if (diff_res < 0)
         return diff_res;
     if (0 < diff_res) {
         if (!quiet_report) {
@@ -426,12 +426,12 @@ diff_node_data(struct AffReader_s *rA, struct AffNode_s *nodeA, const char *file
             printf("  <=>  ");
             print_path(aff_reader_root(rB), nodeB);
             if (aff_node_size(nodeA) == aff_node_size(nodeB))
-                printf(":  %s[%d]: different data\n", 
-                       node_type_str(aff_node_type(nodeA)), aff_node_size(nodeA));
-            else 
+                printf(":  %s[%d]: different data\n",
+                        node_type_str(aff_node_type(nodeA)), aff_node_size(nodeA));
+            else
                 printf(": %s[%d, %d]: different data\n", node_type_str(aff_node_type(nodeA)),
-                       aff_node_size(nodeA), aff_node_size(nodeB));
-            if (print_diff_data) 
+                        aff_node_size(nodeA), aff_node_size(nodeB));
+            if (print_diff_data)
                 printf("%s\n", buf);
         }
     }

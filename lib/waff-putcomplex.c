@@ -17,7 +17,7 @@ aff_node_put_complex(struct AffWriter_s *aff,
 {
     uint32_t i;
     uint8_t buf[sizeof (double _Complex)];
-    uint32_t size;
+    // uint32_t size; // TODO: rm, unused
     uint8_t *ptr;
 
     if (aff == 0 || aff->error)
@@ -36,7 +36,7 @@ aff_node_put_complex(struct AffWriter_s *aff,
     }
     aff_node_assign(n, affNodeComplex, s, aff->position);
     for (i = 0; i < s; i++) {
-	size = sizeof (buf);
+	// size = sizeof (buf); // TODO: rm, unused
 	ptr = aff_encode_double(buf, sizeof(buf), creal(d[i]));
 	ptr = aff_encode_double(ptr, sizeof(buf) - (ptr - buf), cimag(d[i]));
 	if (ptr == 0) {

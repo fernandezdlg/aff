@@ -7,13 +7,15 @@
 int
 aff_name_check3(const char *name)
 {
-    if (name == 0 || *name == 0)
+    if (name == 0 || *name == 0) {
         return 1;
+    } else {
         for (;*name; name++) {
                 if (*name == '/')
                         return 1;
         }
         return 0;
+    }
 }
 
 int

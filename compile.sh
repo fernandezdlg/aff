@@ -12,4 +12,4 @@ make CONFIG=linux
 
 make CONFIG=linux install prefix="./build"
 
-export PATH="$PATH:./build/bin"
+export PATH="$PATH:$(realpath ./build/bin)"
