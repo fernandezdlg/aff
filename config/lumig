@@ -1,0 +1,27 @@
+# This is a configuration file for the lumi env.
+
+# Currently Loaded Modules:
+#   1) cce/19.0.0      3) cray-dsmml/0.3.1    5) cray-libsci/25.03.0   7) LUMI/25.03        (S)   9) craype-accel-amd-gfx90a  11) craype-network-ofi              13) partition/G (S)  15) buildtools/25.03
+#   2) craype/2.7.34   4) cray-mpich/8.1.32   6) PrgEnv-cray/8.6.0     8) craype-x86-trento      10) libfabric/1.22.0         12) xpmem/2.11.5-1.3_g73ade43320bc  14) rocm/6.3.4
+
+#   Where:
+#    S:  Module is Sticky, requires --force to unload or purge
+
+CC=cc
+CXX=CC
+install.CC=$(CC)
+
+CFLAGS=-Wall -O2 -DHAS_INTEGRAL_OFF_T \
+                 -D_POSIX_C_SOURCE=200809L \
+                 -D_LARGEFILE_SOURCE \
+                 -D_FILE_OFFSET_BITS=64
+
+CXXFLAGS= -std=c++14 $(CFLAGS) -I.
+
+install.CFLAGS=
+install.LIBS=
+install.LDFLAGS=
+
+AR=ar
+RANLIB=ranlib
+prefix=$(shell pwd)/../../build_dirs/aff/build
